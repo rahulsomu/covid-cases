@@ -9,6 +9,7 @@ import refreshicon from '../images/refreshicon.png';
 
 const Home = () => {
     const[stateNum,setStateNum]=useState(15);
+    const[time,setTime]=useState();
     const [animate,setAnimate]=useState();
     const[stateName,setStateName]=useState();
     const[cases,setCases]=useState();
@@ -16,17 +17,19 @@ const Home = () => {
     const[active,setActive]=useState();
     const[deaths,setDeaths]=useState();
 
-
+   
 
   
     const update= async()=>{
      const data= await fetch('https://api.covid19india.org/data.json');
      const newData= await data.json();
      setStateName(newData.statewise[stateNum].state);
+     console.log(newData.statewise[stateNum])
      setCases(newData.statewise[stateNum].confirmed);
      setRecovered(newData.statewise[stateNum].recovered);
      setActive(newData.statewise[stateNum].active);
      setDeaths(newData.statewise[stateNum].deaths);
+     setTime(newData.statewise[stateNum].lastupdatedtime);
 
 
 
@@ -53,7 +56,10 @@ const Home = () => {
     
     return (
        <Container>
-          
+           <Heading>
+           <p><span>Covid19</span> Cases</p>
+           </Heading>
+         
           <Map>
           <img src={india} alt="" />
           <StateInfo>
@@ -61,19 +67,18 @@ const Home = () => {
           </StateInfo>
           <Nine onClick={()=>{
              setStateNum(9);
-             update();
+            //  update();
          }}></Nine>
          <Fifteen onClick={()=>{
              setStateNum(15);
-             update();
-         }}></Fifteen>
-          <Fifteen onClick={()=>{
-             setStateNum(15);
-             update();
-         }}></Fifteen>
+            //  update();
+         }}>
+            
+         </Fifteen>
+         
          <ThirtyFive onClick={()=>{
              setStateNum(35);
-             update();
+            //  update();
          }}></ThirtyFive>
           </Map>
           <Data>
@@ -82,7 +87,7 @@ const Home = () => {
                
                 <Total>
                     <h1>{cases}</h1>
-                    <p>Total cases</p>
+                    <p>Total cases in <span>{stateName}</span></p>
                 </Total>
             </Upper>
             <Lower>
@@ -103,7 +108,9 @@ const Home = () => {
                 <img src={refreshicon} style={{animation:animate}} alt="refresh" />
             </Refresh>
           </Data>
-                
+               <Time>
+                   <p>*last updated on {time}*</p>
+                   </Time> 
          
           </Container>
     )
@@ -112,21 +119,39 @@ const Home = () => {
 export default Home;
 
 const Container=styled.div`
-background-color:#fff;
+background-color: #d5fefd;
+background-image: linear-gradient(180deg, #d5fefd 0%, #fffcff 74%);
+
+
 min-width:425px;
-padding-top:20px;
+padding-top:10px;
 height:100vh;
 display:flex;
 flex-direction column;
 align-items:center;
-`
 
+`
+const Heading=styled.div`
+width:100%;
+text-align:center;
+p{
+    font-size:15px;
+    text-transform : uppercase;
+    letter-spacing:2px;
+    color:#222;
+    font-weight:800;
+    margin-bottom:10px;
+}
+span{
+    color:#cf1e15;
+}
+`
 
 const Map=styled.div`
 width:400px;
 height:400px;
+background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
 
-background: linear-gradient(180deg, #e3ffe7 0%, #d9e7ff 100%);
 border-radius:10px;
 
 padding:10px;
@@ -137,8 +162,8 @@ img{
 }
 `
 const StateInfo=styled.div`
-background: linear-gradient(0deg, #4b6cb7 0%, #182848 100%);
-
+background-color: #485461;
+background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);
 position:absolute;
 border-radius:10px;
 box-shadow:0px 5px 10px rgba(0,0,0,0.2);
@@ -190,6 +215,15 @@ h1{
     color:#222;
     font-weight:800;
 }
+p{
+    font-size:12px;
+    font-weight:300;
+
+}
+span{
+    font-weight:600;
+    font-size:14px;
+}
 `
 const Lower=styled.div`
 
@@ -198,7 +232,8 @@ width:100%;
 display:flex;
 align-items:center;
 justify-content:space-between;
-background-color:rgba(255,255,255,0.5);
+background-color: #ffffff;
+
 box-shadow:0px 5px 10px  rgba(1,1,1,.2);
 border-radius:10px;
 `
@@ -266,8 +301,8 @@ display:flex;
 align-items:center;
 justify-content:center;
 border-radius:100px;
-background: linear-gradient(0deg, #4b6cb7 0%, #182848 100%);
-position:absolute;
+background-color: #485461;
+background-image: linear-gradient(315deg, #485461 0%, #28313b 74%);position:absolute;
 bottom:0;
 left:50%;
 transform:translate(-50% , 50%);
@@ -285,7 +320,8 @@ img{
 `
 
 const Fifteen=styled.div`
-background-color:white;
+background-color: #d9d9d9;
+background-image: linear-gradient(315deg, #d9d9d9 0%, #f6f2f2 74%);
 border-radius:40px;
 height:15px;
 width:15px;
@@ -299,7 +335,8 @@ animation:pulse 2s linear infinite;
 `
 
 const Nine=styled.div`
-background-color:white;
+background-color: #d9d9d9;
+background-image: linear-gradient(315deg, #d9d9d9 0%, #f6f2f2 74%);
 border-radius:40px;
 height:15px;
 width:15px;
@@ -313,15 +350,31 @@ animation:pulse 2s linear infinite;
 
 `
 const ThirtyFive=styled.div`
-background-color:white;
+background-color: #d9d9d9;
+background-image: linear-gradient(315deg, #d9d9d9 0%, #f6f2f2 74%);
 border-radius:40px;
 height:15px;
 width:15px;
 position:absolute;
+display:flex;
+align-items:center;
+justify-content:center;
 box-shadow:0px 5px 10px  rgba(1,1,1,.2);
 
 top: 150px;
 left: 165px;
 animation:pulse 2s linear infinite;
 z-index:10;
+`
+
+const Time=styled.div`
+// width:100%;
+margin-top:40px;
+text-align:center;
+p{
+    font-size:12px;
+    letter-spacing:2px;
+    color:#222;
+    font-weight:300;
+}
 `
