@@ -17,6 +17,7 @@ const Home = () => {
     const[deaths,setDeaths]=useState();
 
 
+
   
     const update= async()=>{
      const data= await fetch('https://api.covid19india.org/data.json');
@@ -36,7 +37,7 @@ const Home = () => {
         update();
        
         
-    },[]);
+    });
     
 
     const refresh=()=>{
@@ -60,19 +61,19 @@ const Home = () => {
           </StateInfo>
           <Nine onClick={()=>{
              setStateNum(9);
-            refresh();
+             update();
          }}></Nine>
          <Fifteen onClick={()=>{
              setStateNum(15);
-             refresh();
+             update();
          }}></Fifteen>
           <Fifteen onClick={()=>{
              setStateNum(15);
-             refresh();
+             update();
          }}></Fifteen>
          <ThirtyFive onClick={()=>{
              setStateNum(35);
-             refresh();
+             update();
          }}></ThirtyFive>
           </Map>
           <Data>
